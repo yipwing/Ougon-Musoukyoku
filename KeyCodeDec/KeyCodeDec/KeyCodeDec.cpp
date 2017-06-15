@@ -1,5 +1,4 @@
-// KeyCodeDec.cpp : ¶¨Òå¿ØÖÆÌ¨Ó¦ÓÃ³ÌĞòµÄÈë¿Úµã¡£
-// ÏÂ¸ö°æ±¾¸Ä½øÌ½²â³ÌĞò,Ôö¼Ó¾²Ì¬»úÆ÷Âë¸´ÖÆµ½ÎÄ±¾,¼ÆËãJMPµÄÊıÖµ,ÔÛµÃÈÏÕæÑ§Ï°PEÎÄ¼ş½á¹¹..ÖØĞÂ±àĞ´´Ë³ÌĞò..
+// KeyCodeDec.cpp : å®šä¹‰æ§åˆ¶å°åº”ç”¨ç¨‹åºçš„å…¥å£ç‚¹ã€‚
 #include "stdafx.h"
 #include "KeyCodeDec.h"
 #include "DefineHead.h"
@@ -13,14 +12,14 @@ int main(int argc, char* argv[])
     FILE *pcfile;
 	fopen_s(&pcfile,"kbrebind.key","w");
 	fprintf(pcfile,"[NKEY]");
-    fprintf(pcfile,"%s","\n;ÒÔÏÂÊÇ¼üÎ»Î»ÖÃ\n");
+    fprintf(pcfile,"%s","\n;ä»¥ä¸‹æ˜¯é”®ä½ä½ç½®\n");
     unsigned int i = 22528;
 	unsigned int x = 0; unsigned int y = 0; unsigned int z = 0;
 	unsigned int *b = 0;
 //	unsigned char* hexchar;
 //	fpos_t pos;
     if(!pfile){
-        printf("´ò¿ªÎÄ¼şÊ§°Ü,»òÕÒ²»µ½ÎÄ¼ş\n");
+        printf("æ‰“å¼€æ–‡ä»¶å¤±è´¥,æˆ–æ‰¾ä¸åˆ°æ–‡ä»¶\n");
 		getchar();
         return 0;
     }
@@ -28,18 +27,18 @@ int main(int argc, char* argv[])
 	size = ftell(pfile);
 	fseek(pfile, 0, SEEK_SET);
 	if (size < 0xb0000){
-		printf("Ã²ËÆ²»ÊÇÒ»¸öÓĞĞ§µÄ¿ÉÖ´ĞĞ³ÌĞò.\n");
+		printf("è²Œä¼¼ä¸æ˜¯ä¸€ä¸ªæœ‰æ•ˆçš„å¯æ‰§è¡Œç¨‹åº.\n");
 		getchar();
 		return 0;
 	}
-	printf("±¾³ÌĞò»á×Ô¶¯ÔÚ³ÌĞòÄ¿Â¼Éú³Ékbrebind.keyÎÄ¼ş\n");
-	printf("°´»Ø³µ¼ü¼ÌĞø");
+	printf("æœ¬ç¨‹åºä¼šè‡ªåŠ¨åœ¨ç¨‹åºç›®å½•ç”Ÿæˆkbrebind.keyæ–‡ä»¶\n");
+	printf("æŒ‰å›è½¦é”®ç»§ç»­");
 	getchar();
     data =(unsigned char*)malloc(size);
     fread(data,size,1,pfile);
 	if(!isPEfile(data))
 	{
-		printf("²»ÊÇÒ»¸öwindows¿ÉÖ´ĞĞ³ÌĞò.\n");
+		printf("ä¸æ˜¯ä¸€ä¸ªwindowså¯æ‰§è¡Œç¨‹åº.\n");
 		getchar();
 		return 0;
 	}
@@ -113,11 +112,11 @@ int main(int argc, char* argv[])
 			}
 			if(memcmp(data + i,combocode,sizeof(combocode))==0)
 			{
-				fprintf(pcfile,"[COMBOKEY]\nCOMBOAD = 0x%X\n;ÉÏÃæÊÇ×éºÏ¼üÎ»ÖÃ\n",i);		
+				fprintf(pcfile,"[COMBOKEY]\nCOMBOAD = 0x%X\n;ä¸Šé¢æ˜¯ç»„åˆé”®ä½ç½®\n",i);		
 				y = i + 0x00400000;
 				z = y - x - 5 + 1;
-				//ÏÂ¸ö°æ±¾°Ñ¼ÆËãºÃµÄÌø×ªÖµ×ª»»Îªopcode ²¢Ò»²½Ò»²½µÄ°Ñ´úÂë¸ÄÎª×Ô¶¯Ì½²â»¯..
-				fprintf(pcfile,"[JMPKEY]\nJMPCA = 0x%X\n;ÉÏÃæÊÇJMPµÄÌø×ªÖµ(¼ÇµÃ·´×ªà¸..)\n",z);
+				//ä¸‹ä¸ªç‰ˆæœ¬æŠŠè®¡ç®—å¥½çš„è·³è½¬å€¼è½¬æ¢ä¸ºopcode å¹¶ä¸€æ­¥ä¸€æ­¥çš„æŠŠä»£ç æ”¹ä¸ºè‡ªåŠ¨æ¢æµ‹åŒ–..
+				fprintf(pcfile,"[JMPKEY]\nJMPCA = 0x%X\n;ä¸Šé¢æ˜¯JMPçš„è·³è½¬å€¼(è®°å¾—åè½¬å–”..)\n",z);
 //				pos = i;
 //				fsetpos(pfile,&pos);
 //				fread(hexchar,92,1,pfile);
@@ -134,11 +133,11 @@ int main(int argc, char* argv[])
 			}
 			if(memcmp(data + i,version1,sizeof(version1))==0)
 			{
-				fprintf(pcfile,"[VERSION]\nVer = 0x%X\n;ÉÏÃæÊÇ°æ±¾ĞÅÏ¢\n",i);
+				fprintf(pcfile,"[VERSION]\nVer = 0x%X\n;ä¸Šé¢æ˜¯ç‰ˆæœ¬ä¿¡æ¯\n",i);
 			}
 			else if(memcmp(data + i,version2,sizeof(version2))==0)
 			{
-				fprintf(pcfile,"[VERSION]\nVer = 0x%X\n;ÉÏÃæÊÇ°æ±¾ĞÅÏ¢\n",i);
+				fprintf(pcfile,"[VERSION]\nVer = 0x%X\n;ä¸Šé¢æ˜¯ç‰ˆæœ¬ä¿¡æ¯\n",i);
 			}
         i++;
 		if(i==0x000F7000)
