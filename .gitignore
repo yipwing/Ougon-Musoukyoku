@@ -50,3 +50,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+
+# Other ignore files
+**/Debug/*.*
+*.tlog
+*.suo
+*.VC.db
+*.VC.opendb
+*.ipch
+*.vcxproj

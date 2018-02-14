@@ -99,131 +99,132 @@ LRESULT CALLBACK Evol(HWND hwnd,UINT uMsg, WPARAM wParam, LPARAM lParam)
 			MessageBox(hwnd,L"请注意把exe文件改为Gamemain.exe",L"提示",MB_OK|MB_ICONINFORMATION);
 			GetFileNames(hwnd,hFileName);
 			_wfopen_s(&hFile,hFileName,L"rb");
-			fseek(hFile, 0, SEEK_END);
-			size = ftell(hFile);
-			fseek(hFile, 0, SEEK_SET);
-			data =(unsigned char*)malloc(size);
-			fread(data,size,1,hFile);
-			if(!isPEfile(data))
-			{
-				MessageBox(hwnd,L"不是一个有效的执行程序",L"错误",MB_OK|MB_ICONERROR);
-				free(data);
-				fclose(hFile);
-				return 0;
-			}
-			hexchar = (unsigned char*)malloc(90);
-			//_wfopen_s(&pOutput,L"output.txt",L"w");
-			while (i < size){
-				if(memcmp(data + i,code1,sizeof(code1))==0)
+			if (hFile) {
+				fseek(hFile, 0, SEEK_END);
+				size = ftell(hFile);
+				fseek(hFile, 0, SEEK_SET);
+				data = (unsigned char*)malloc(size);
+				fread(data, size, 1, hFile);
+				if (!isPEfile(data))
 				{
-					fprintf(pOutput,"0x%X\n",i+2);
+					MessageBox(hwnd, L"不是一个有效的执行程序", L"错误", MB_OK | MB_ICONERROR);
+					free(data);
+					fclose(hFile);
+					return 0;
 				}
-				if(memcmp(data + i,code2,sizeof(code2))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code3,sizeof(code3))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code4,sizeof(code4))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code5,sizeof(code5))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code6,sizeof(code6))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code7,sizeof(code7))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code8,sizeof(code8))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code9,sizeof(code9))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code10,sizeof(code10))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code11,sizeof(code11))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code12,sizeof(code12))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code13,sizeof(code13))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code14,sizeof(code14))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code15,sizeof(code15))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-				}
-				if(memcmp(data + i,code16,sizeof(code16))==0)
-				{
-					fprintf(pOutput,"0x%X\n",i+2);
-					x = i;
-					x += 0x00400000;
-				}
-				if(memcmp(data + i,combocode,sizeof(combocode))==0)
-				{
-					fprintf(pOutput,"0x%X,这里是组合键位置(拿到源码后对比下,这里是需要汇编代码来做的(相当于增加功能)..)\n",i);
-					fprintf(pOutput,"上面说的源码,是改键器C语言的源码,这里说的对比,是对比下面的机器码.记得计算JMP的跳转值(回跳)\n");
-					y = i + 0x00400000;
-					z = y - x - 5 + 1;
-					//下个版本把计算好的跳转值转换为opcode 并一步一步的把代码改为自动探测化..
-					fprintf(pOutput,"0x%X,这里是JMP的跳转值(不一定正确,这个要找到RVA相对计算才行,咱没用PE方式获得RVA)\n以下是原始码(也是要修改的地方,也是需要仔细对比的地方):\n",z);
-					pos = i;
-					fsetpos(hFile,&pos);
-					fread(hexchar,92,1,hFile);
-					fgetpos(hFile,&pos);
-					unsigned int b = 0;
-					for(; b < 92; hexchar++,b++)
+				hexchar = (unsigned char*)malloc(90);
+				//_wfopen_s(&pOutput,L"output.txt",L"w");
+				while (i < size) {
+					if (memcmp(data + i, code1, sizeof(code1)) == 0)
 					{
-						fprintf(pOutput,"0x%X%X ",(*hexchar>>4) & 0xF,(*hexchar) & 0xF);
-						if(hexchar+3==0x00)
-							break;
+						fprintf(pOutput, "0x%X\n", i + 2);
 					}
-					fprintf(pOutput,"\n","");
+					if (memcmp(data + i, code2, sizeof(code2)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code3, sizeof(code3)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code4, sizeof(code4)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code5, sizeof(code5)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code6, sizeof(code6)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code7, sizeof(code7)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code8, sizeof(code8)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code9, sizeof(code9)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code10, sizeof(code10)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code11, sizeof(code11)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code12, sizeof(code12)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code13, sizeof(code13)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code14, sizeof(code14)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code15, sizeof(code15)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+					}
+					if (memcmp(data + i, code16, sizeof(code16)) == 0)
+					{
+						fprintf(pOutput, "0x%X\n", i + 2);
+						x = i;
+						x += 0x00400000;
+					}
+					if (memcmp(data + i, combocode, sizeof(combocode)) == 0)
+					{
+						fprintf(pOutput, "0x%X,这里是组合键位置(拿到源码后对比下,这里是需要汇编代码来做的(相当于增加功能)..)\n", i);
+						fprintf(pOutput, "上面说的源码,是改键器C语言的源码,这里说的对比,是对比下面的机器码.记得计算JMP的跳转值(回跳)\n");
+						y = i + 0x00400000;
+						z = y - x - 5 + 1;
+						//下个版本把计算好的跳转值转换为opcode 并一步一步的把代码改为自动探测化..
+						fprintf(pOutput, "0x%X,这里是JMP的跳转值(不一定正确,这个要找到RVA相对计算才行,咱没用PE方式获得RVA)\n以下是原始码(也是要修改的地方,也是需要仔细对比的地方):\n", z);
+						pos = i;
+						fsetpos(hFile, &pos);
+						fread(hexchar, 92, 1, hFile);
+						fgetpos(hFile, &pos);
+						unsigned int b = 0;
+						for (; b < 92; hexchar++, b++)
+						{
+							fprintf(pOutput, "0x%X%X ", (*hexchar >> 4) & 0xF, (*hexchar) & 0xF);
+							if (hexchar + 3 == 0x00)
+								break;
+						}
+						fprintf(pOutput, "\n");
+					}
+					if (memcmp(data + i, version1, sizeof(version1)) == 0)
+					{
+						fprintf(pOutput, "0x%X,这个位置是版本信息\n", i);
+					}
+					else if (memcmp(data + i, version2, sizeof(version2)) == 0)
+					{
+						fprintf(pOutput, "0x%X,这个位置是版本信息\n", i);
+					}
+					i++;
+					if (i == 0x000F7000)
+					{
+						break;
+					}
 				}
-				if(memcmp(data + i,version1,sizeof(version1))==0)
-				{
-					fprintf(pOutput,"0x%X,这个位置是版本信息\n",i);
-				}
-				else if(memcmp(data + i,version2,sizeof(version2))==0)
-				{
-					fprintf(pOutput,"0x%X,这个位置是版本信息\n",i);
-				}
-				i++;
-				if(i==0x000F7000)
-				{
-					break;
-				}
-			}	
-				fprintf(pOutput,"%s","KeyCodeAddr by QQ: 8532125 嗯,有了这个东东以后大家应该都会弄改键器了吧");
+				fprintf(pOutput, "%s", "KeyCodeAddr by QQ: 8532125 嗯,有了这个东东以后大家应该都会弄改键器了吧");
 				free(data);
-//				free(hexchar);
 				fclose(hFile);
 				fclose(pOutput);
-				if (IDYES==MessageBox(hwnd,L"完成,是否打开文件查看?",L"提示",MB_YESNO|MB_ICONINFORMATION))
+				if (IDYES == MessageBox(hwnd, L"完成,是否打开文件查看?", L"提示", MB_YESNO | MB_ICONINFORMATION))
 				{
-					ShellExecute(NULL,L"open",L"output.txt",L"",L"",SW_SHOWMAXIMIZED);
+					ShellExecute(NULL, L"open", L"output.txt", L"", L"", SW_SHOWMAXIMIZED);
 				}
+			}
 			break;
 		}
 		break;
